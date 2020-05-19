@@ -32,37 +32,6 @@ public class Proxy implements Runnable {
         }
 
 
-
-        // LOGGER.info("Proxy {}:{} --> {}:{}", in.getInetAddress().getHostName(), in.getPort(),out.getInetAddress().getHostName(), out.getPort());
-        /*try {
-
-             InputStream inputStream = getInputStream();
-             OutputStream outputStream = getOutputStream();
-            if (inputStream == null || outputStream == null) {
-                System.out.println("ESTOU A NULL");
-                return;
-            }
-
-            byte[] reply = new byte[65535];
-            int bytesRead;
-            while ((bytesRead = inputStream.read(reply)) != -1) {
-                System.out.println(reply);
-                //outputStream.write(reply, 0, bytesRead);
-            }
-            sendToUdp(reply);
-
-        } catch (SocketException ignored) {
-            ignored.printStackTrace();
-        } catch (Exception e ) {
-            e.printStackTrace();
-        } finally {
-            try {
-                tcpSocket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } */
-
     }
 
     private void sendToUDP() throws IOException {
@@ -70,14 +39,15 @@ public class Proxy implements Runnable {
         InputStream inputStream = getInputStream();
         int bytesRead;
         int packageCount = 0;
-        while ((bytesRead = inputStream.read(reply,0,200)) != -1) {
+        while (inputStream != null && (bytesRead = inputStream.read(reply,0,200)) != -1) {
             UDPData dataUdp = new UDPData(packageCount,reply,bytesRead);
             if(bytesRead < 200)
                     dataUdp.setFinalPacket();
             byte[] buf = ObjectSerializer.getObjectInByte(dataUdp);
             DatagramSocket udpSocket = new DatagramSocket();
+            if(buf != null) {
             DatagramPacket datagramPacket = new DatagramPacket(buf,buf.length, tcpSocket.getInetAddress(),udpPort);
-            udpSocket.send(datagramPacket);
+            udpSocket.send(datagramPacket);}
         }
 
     }
