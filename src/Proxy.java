@@ -76,7 +76,7 @@ public class Proxy implements Runnable {
                     dataUdp.setFinalPacket();
             byte[] buf = ObjectSerializer.getObjectInByte(dataUdp);
             DatagramSocket udpSocket = new DatagramSocket();
-            DatagramPacket datagramPacket = new DatagramPacket(buf,buf.length, InetAddress.getByName("192.168.1.162"),udpPort);
+            DatagramPacket datagramPacket = new DatagramPacket(buf,buf.length, tcpSocket.getInetAddress(),udpPort);
             udpSocket.send(datagramPacket);
         }
 
@@ -84,13 +84,15 @@ public class Proxy implements Runnable {
 
 
     private void sendToTCP() throws IOException {
+        UDPHelperToTcp.sendUDPPackagesToTCP(this.tcpSocket,this.udpPort);
+        /*
         byte[] reply = new byte[255];
         DatagramPacket packet = new DatagramPacket(reply,reply.length);
         DatagramSocket udpSocket = new DatagramSocket(udpPort);
-        udpSocket.receive(packet);
-        UDPData dataUdp = (UDPData) ObjectSerializer.getObjectFromByte(packet.getData());
-        OutputStream outputStream = getOutputStream();
-        outputStream.write(dataUdp.getData(),0,dataUdp.getData().length);
+            udpSocket.receive(packet);
+            UDPData dataUdp = (UDPData) ObjectSerializer.getObjectFromByte(packet.getData());
+            OutputStream outputStream = getOutputStream();
+        outputStream.write(dataUdp.getData(),0,dataUdp.getData().length); */
         sendToUDP();
     }
 
