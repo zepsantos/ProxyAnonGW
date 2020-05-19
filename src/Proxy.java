@@ -76,7 +76,7 @@ public class Proxy implements Runnable {
                     dataUdp.setFinalPacket();
             byte[] buf = ObjectSerializer.getObjectInByte(dataUdp);
             DatagramSocket udpSocket = new DatagramSocket();
-            DatagramPacket datagramPacket = new DatagramPacket(buf,buf.length, InetAddress.getByName("192.168.1.75"),udpPort);
+            DatagramPacket datagramPacket = new DatagramPacket(buf,buf.length, InetAddress.getByName("192.168.1.162"),udpPort);
             udpSocket.send(datagramPacket);
         }
 
@@ -91,7 +91,7 @@ public class Proxy implements Runnable {
         UDPData dataUdp = (UDPData) ObjectSerializer.getObjectFromByte(packet.getData());
         OutputStream outputStream = getOutputStream();
         outputStream.write(dataUdp.getData(),0,dataUdp.getData().length);
-
+        sendToUDP();
     }
 
     private InputStream getInputStream() {
