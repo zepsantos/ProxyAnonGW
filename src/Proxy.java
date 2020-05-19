@@ -76,7 +76,7 @@ public class Proxy implements Runnable {
                     dataUdp.setFinalPacket();
             byte[] buf = ObjectSerializer.getObjectInByte(dataUdp);
             DatagramSocket udpSocket = new DatagramSocket();
-            DatagramPacket datagramPacket = new DatagramPacket(buf,buf.length, InetAddress.getByName("192.168.1.162"),udpPort);
+            DatagramPacket datagramPacket = new DatagramPacket(buf,buf.length,tcpSocket.getInetAddress(),udpPort);
             udpSocket.send(datagramPacket);
         }
 
