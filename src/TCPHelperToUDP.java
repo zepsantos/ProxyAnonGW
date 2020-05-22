@@ -11,9 +11,9 @@ public class TCPHelperToUDP {
         byte[] buffer = new byte[500];
         int packagesCount = 0;
         int bytesRead = 0;
-        while((bytesRead = is.read(buffer,bytesRead,buffer.length)) != -1) {
+        while((bytesRead = is.read(buffer,0,buffer.length)) != -1) {
             UDPData data = new UDPData(packagesCount,buffer,bytesRead);
-            if(bytesRead < 500) {
+            if(bytesRead < buffer.length) {
                 data.setFinalPacket();
             }
             byte[] bufToSend = ObjectSerializer.getObjectInByte(data);
