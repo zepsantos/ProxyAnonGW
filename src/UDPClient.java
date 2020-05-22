@@ -13,6 +13,7 @@ public class UDPClient implements Runnable {
     }
     @Override
     public void run() {
+
             connectToTarget();
         try {
             TCPHelperToUDP.sendTCPPackagesToUDP(socket,port);
