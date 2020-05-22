@@ -29,7 +29,16 @@ public class UDPServer implements Runnable {
     @Override
     public void run() {
         initServer();
+        sendTCPPacketsByUDP();
         listenForUDPPackets();
+    }
+
+    private void sendTCPPacketsByUDP() {
+        try {
+            TCPHelperToUDP.sendTCPPackagesToUDP(this.socket, port);
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

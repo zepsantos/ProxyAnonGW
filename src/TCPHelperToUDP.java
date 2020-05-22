@@ -21,6 +21,7 @@ public class TCPHelperToUDP {
                 DatagramSocket udpSocket = new DatagramSocket();
                 DatagramPacket datagramPacket = new DatagramPacket(bufToSend,bufToSend.length, socket.getInetAddress(),port);
                 udpSocket.send(datagramPacket);
+                packagesCount++;
             }
         }
     }
