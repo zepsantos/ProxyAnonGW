@@ -22,10 +22,10 @@ public class UDPHelperToTcp {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        sendUDPPackagesToTCP(socket,port,dataTreeMap);
+        sendAux(socket,port,dataTreeMap);
     }
 
-    private static void sendUDPPackagesToTCP(Socket socket, int port, TreeMap<Integer,UDPData> dataTreeMap) {
+    private static void sendAux(Socket socket, int port, TreeMap<Integer,UDPData> dataTreeMap) {
         try (OutputStream outputStream = socket.getOutputStream()) {
             for (Integer key : dataTreeMap.keySet()) {
                 byte[] buf = dataTreeMap.get(key).getData();
