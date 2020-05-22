@@ -55,14 +55,6 @@ public class Proxy implements Runnable {
 
     private void sendToTCP() throws IOException {
         UDPHelperToTcp.sendUDPPackagesToTCP(this.tcpSocket,this.udpPort);
-        /*
-        byte[] reply = new byte[255];
-        DatagramPacket packet = new DatagramPacket(reply,reply.length);
-        DatagramSocket udpSocket = new DatagramSocket(udpPort);
-            udpSocket.receive(packet);
-            UDPData dataUdp = (UDPData) ObjectSerializer.getObjectFromByte(packet.getData());
-            OutputStream outputStream = getOutputStream();
-        outputStream.write(dataUdp.getData(),0,dataUdp.getData().length); */
         sendToUDP();
     }
 
