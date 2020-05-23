@@ -30,6 +30,7 @@ public class UDPServer implements Runnable {
     public void run() {
         initServer();
         sendTCPPacketsByUDP();
+
         listenForUDPPackets();
     }
 
@@ -43,6 +44,7 @@ public class UDPServer implements Runnable {
 
 
     private void listenForUDPPackets() {
+        log.info("Listen for udp packets from " + this.socket.getInetAddress().getHostAddress());
         try {
             UDPHelperToTcp.sendUDPPackagesToTCP(this.socket.getOutputStream(),port);
         } catch (IOException e) {
