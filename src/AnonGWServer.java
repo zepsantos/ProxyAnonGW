@@ -2,14 +2,14 @@ import java.io.IOException;
 import java.net.*;
 import java.util.logging.Logger;
 
-public class UDPServer implements Runnable {
+public class AnonGWServer implements Runnable {
     private int port;
-    private Logger log = Logger.getLogger(UDPClient.class.getName());
+    private Logger log = Logger.getLogger(AnonGWClient.class.getName());
     private DatagramSocket udpSocket;
     private Socket socket;
     private InetAddress address;
     private boolean running = true;
-    public UDPServer(Socket socket) {
+    public AnonGWServer(Socket socket) {
         this.socket = socket;
         this.port = 6666;
         try {
@@ -29,8 +29,14 @@ public class UDPServer implements Runnable {
     @Override
     public void run() {
         initServer();
-        Thread t = new Thread(this::listenForUDPPackets);
-        t.start();
+        Thread t = null;
+        try {
+            t = new Thread(new UDPHelperToTcp(this.socket.getOutputStream(),this.port));
+            t.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         sendTCPPacketsByUDP();
     }
 
@@ -42,16 +48,6 @@ public class UDPServer implements Runnable {
         }
     }
 
-
-    private void listenForUDPPackets() {
-        while(running) {
-            try {
-                UDPHelperToTcp.sendUDPPackagesToTCP(this.socket.getOutputStream(), port);
-            }catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
     private void initServer() {
         log.info("Broadcasting to 6666 a new connection with a new port");

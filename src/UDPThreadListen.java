@@ -1,4 +1,3 @@
-import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -24,7 +23,7 @@ public class UDPThreadListen implements  Runnable {
                 udpSocket.receive(packet);
                 UDPPortMessage udpPortMessage = (UDPPortMessage) ObjectSerializer.getObjectFromByte(packet.getData());
                 if(udpPortMessage != null)
-                new Thread(new UDPClient(udpPortMessage.getCustomPort(),packet.getAddress())).start();
+                new Thread(new AnonGWClient(udpPortMessage.getCustomPort(),packet.getAddress())).start();
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -1,6 +1,4 @@
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Logger;
@@ -24,11 +22,11 @@ public class TCPThreadListen implements Runnable {
                 Socket socket = serverSocket.accept();
                 log.info("TCP Connection received: "+ socket.getInetAddress().getHostAddress());
 
-                new Thread(new UDPServer(socket)).start();
+                new Thread(new AnonGWServer(socket)).start();
             } catch (IOException  e) {
+
                 e.printStackTrace();
             }
-
         }
 
     }
