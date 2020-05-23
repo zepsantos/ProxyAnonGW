@@ -24,7 +24,7 @@ public class UDPThreadListen implements  Runnable {
                 udpSocket.receive(packet);
                 UDPPortMessage udpPortMessage = (UDPPortMessage) ObjectSerializer.getObjectFromByte(packet.getData());
                 if(udpPortMessage != null)
-                new Thread(new UDPClient(udpPortMessage.getCustomPort())).start();
+                new Thread(new UDPClient(udpPortMessage.getCustomPort(),packet.getAddress())).start();
             } catch (IOException e) {
                 e.printStackTrace();
             }
