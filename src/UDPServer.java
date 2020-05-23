@@ -60,7 +60,7 @@ public class UDPServer implements Runnable {
     private int sendPort() {
         byte[] buf;
         UDPPortMessage udpPortMessage = new UDPPortMessage();
-        System.out.println("VOU falar na porta " + udpPortMessage.getCustomPort());
+        log.info("Talking on port " + udpPortMessage.getCustomPort());
         buf = ObjectSerializer.getObjectInByte(udpPortMessage);
         DatagramPacket portPacket = null;
         if (buf != null) {
