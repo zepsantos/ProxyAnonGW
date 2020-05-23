@@ -8,9 +8,19 @@ import java.net.Socket;
 import java.util.TreeMap;
 import java.util.logging.Logger;
 
-public class UDPHelperToTcp {
-    public static void sendUDPPackagesToTCP(OutputStream outputStream,int port) {
-        Logger.getLogger(UDPHelperToTcp.class.getName()).info("Sending UDP packages to TCP");
+
+public class UDPHelperToTcp implements Runnable {
+    private OutputStream outputStream;
+    private int port;
+    private boolean running = true;
+
+    public UDPHelperToTcp(OutputStream outputStream , int port) {
+        this.port = port;
+        this.outputStream = outputStream;
+    }
+
+    @Override
+    public void run() {
         TreeMap<Integer,UDPData> dataTreeMap = new TreeMap<>();
         try {
             byte[] buf = new byte[500];
@@ -20,16 +30,20 @@ public class UDPHelperToTcp {
             do {
                 udpSocket.receive(packet);
                 data = (UDPData) ObjectSerializer.getObjectFromByte(packet.getData());
-                if(data != null)
+                if(data != null) {
                     dataTreeMap.put(data.getIndex(), data.clone());
-            }while(data != null  && !data.isFinalPacket());
+                   // if(data.isFinalPacket()) sendAux(outputStream,dataTreeMap);
+                }
+            }while(running);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        sendAux(outputStream,dataTreeMap);
+
     }
 
-    private static void sendAux(OutputStream outputStream, TreeMap<Integer,UDPData> dataTreeMap) {
+
+
+    private void sendAux(OutputStream outputStream, TreeMap<Integer,UDPData> dataTreeMap) {
         try  {
             for (Integer key : dataTreeMap.keySet()) {
                 byte[] buf = dataTreeMap.get(key).getData();
