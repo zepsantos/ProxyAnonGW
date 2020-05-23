@@ -8,7 +8,7 @@ public class UDPServer implements Runnable {
     private DatagramSocket udpSocket;
     private Socket socket;
     private InetAddress address;
-
+    private boolean running = true;
     public UDPServer(Socket socket) {
         this.socket = socket;
         this.port = 6666;
@@ -29,14 +29,14 @@ public class UDPServer implements Runnable {
     @Override
     public void run() {
         initServer();
+        Thread t = new Thread(this::listenForUDPPackets);
+        t.start();
         sendTCPPacketsByUDP();
-
-        listenForUDPPackets();
     }
 
     private void sendTCPPacketsByUDP() {
         try {
-            TCPHelperToUDP.sendTCPPackagesToUDP(this.socket.getInputStream(),address, port);
+            TCPHelperToUDP.sendTCPPackagesToUDP(this.socket.getInputStream(),this.socket.getInetAddress(), port);
         }catch (IOException e) {
             e.printStackTrace();
         }
@@ -45,10 +45,12 @@ public class UDPServer implements Runnable {
 
     private void listenForUDPPackets() {
         log.info("Listen for udp packets from " + this.socket.getInetAddress().getHostAddress());
-        try {
-            UDPHelperToTcp.sendUDPPackagesToTCP(this.socket.getOutputStream(),port);
-        } catch (IOException e) {
-            e.printStackTrace();
+        while(running) {
+            try {
+                UDPHelperToTcp.sendUDPPackagesToTCP(this.socket.getOutputStream(), port);
+            }catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
