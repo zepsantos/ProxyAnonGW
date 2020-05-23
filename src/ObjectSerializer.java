@@ -4,7 +4,7 @@ public class ObjectSerializer {
 
     public static byte[] getObjectInByte(Object object) {
         try {
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(2048);
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(500);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
             objectOutputStream.writeObject(object);
             objectOutputStream.close();
