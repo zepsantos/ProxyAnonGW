@@ -54,7 +54,7 @@ public class Proxy implements Runnable {
 
 
     private void sendToTCP() throws IOException {
-        UDPHelperToTcp.sendUDPPackagesToTCP(this.tcpSocket,this.udpPort);
+       // UDPHelperToTcp.sendUDPPackagesToTCP(this.tcpSocket,this.udpPort);
         sendToUDP();
     }
 

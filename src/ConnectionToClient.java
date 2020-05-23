@@ -19,7 +19,11 @@ public class ConnectionToClient implements Runnable {
     @Override
     public void run() {
         ClientData clientData = AnonBD.getInstance().getClient(port);
-        UDPHelperToTcp.sendUDPPackagesToTCP(clientData.getSocket(),port);
+        try {
+            UDPHelperToTcp.sendUDPPackagesToTCP(clientData.getSocket().getOutputStream(),port);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
     }

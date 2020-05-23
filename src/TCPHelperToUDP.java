@@ -2,12 +2,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.Socket;
 
 public class TCPHelperToUDP {
 
-    public static void sendTCPPackagesToUDP(Socket socket, int port) throws IOException {
-        InputStream is = socket.getInputStream();
+    public static void sendTCPPackagesToUDP(InputStream is, InetAddress address, int port) throws IOException {
         byte[] buffer = new byte[500];
         int packagesCount = 0;
         int bytesRead = 0;
@@ -19,7 +19,7 @@ public class TCPHelperToUDP {
             byte[] bufToSend = ObjectSerializer.getObjectInByte(data);
             if(bufToSend != null) {
                 DatagramSocket udpSocket = new DatagramSocket();
-                DatagramPacket datagramPacket = new DatagramPacket(bufToSend,bufToSend.length, socket.getInetAddress(),port);
+                DatagramPacket datagramPacket = new DatagramPacket(bufToSend,bufToSend.length, address ,port);
                 udpSocket.send(datagramPacket);
                 packagesCount++;
             }
