@@ -7,16 +7,21 @@ public class UDPClient implements Runnable {
     private int port;
     private Logger log = Logger.getLogger(UDPClient.class.getName());
     private Socket socket;
-    public  UDPClient(int port)  {
+    private InetAddress clientAddress;
+    public  UDPClient(int port,InetAddress clientAddress)  {
         this.port = port;
-
+        this.clientAddress = clientAddress;
     }
     @Override
     public void run() {
-
             connectToTarget();
         try {
-            TCPHelperToUDP.sendTCPPackagesToUDP(socket,port);
+            UDPHelperToTcp.sendUDPPackagesToTCP(this.socket.getOutputStream(),port);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            TCPHelperToUDP.sendTCPPackagesToUDP(this.socket.getInputStream(),clientAddress,port);
         } catch (IOException e) {
             e.printStackTrace();
         }

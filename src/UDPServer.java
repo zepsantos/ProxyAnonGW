@@ -35,7 +35,7 @@ public class UDPServer implements Runnable {
 
     private void sendTCPPacketsByUDP() {
         try {
-            TCPHelperToUDP.sendTCPPackagesToUDP(this.socket, port);
+            TCPHelperToUDP.sendTCPPackagesToUDP(this.socket.getInputStream(),address, port);
         }catch (IOException e) {
             e.printStackTrace();
         }
@@ -43,7 +43,11 @@ public class UDPServer implements Runnable {
 
 
     private void listenForUDPPackets() {
-        UDPHelperToTcp.sendUDPPackagesToTCP(this.socket,port);
+        try {
+            UDPHelperToTcp.sendUDPPackagesToTCP(this.socket.getOutputStream(),port);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void initServer() {

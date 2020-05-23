@@ -6,10 +6,10 @@ import java.net.Socket;
 import java.util.TreeMap;
 
 public class UDPHelperToTcp {
-    public static void sendUDPPackagesToTCP(Socket socket,int port) {
+    public static void sendUDPPackagesToTCP(OutputStream outputStream,int port) {
         TreeMap<Integer,UDPData> dataTreeMap = new TreeMap<>();
         try {
-            byte[] buf = new byte[200];
+            byte[] buf = new byte[500];
             DatagramSocket udpSocket = new DatagramSocket(port);
             DatagramPacket packet = new DatagramPacket(buf,buf.length);
             UDPData data = null;
@@ -22,11 +22,11 @@ public class UDPHelperToTcp {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        sendAux(socket,port,dataTreeMap);
+        sendAux(outputStream,dataTreeMap);
     }
 
-    private static void sendAux(Socket socket, int port, TreeMap<Integer,UDPData> dataTreeMap) {
-        try (OutputStream outputStream = socket.getOutputStream()) {
+    private static void sendAux(OutputStream outputStream, TreeMap<Integer,UDPData> dataTreeMap) {
+        try  {
             for (Integer key : dataTreeMap.keySet()) {
                 byte[] buf = dataTreeMap.get(key).getData();
                 System.out.println(key);
