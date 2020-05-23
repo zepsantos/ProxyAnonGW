@@ -4,8 +4,10 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.Socket;
 import java.util.TreeMap;
+import java.util.logging.Logger;
 
 public class UDPHelperToTcp implements Runnable {
+    private static Logger log = Logger.getLogger(UDPHelperToTcp.class.getName());
     private OutputStream outputStream;
     private int port;
     private boolean running = true;
@@ -17,23 +19,26 @@ public class UDPHelperToTcp implements Runnable {
 
     @Override
     public void run() {
+
+        do {
         TreeMap<Integer,UDPData> dataTreeMap = new TreeMap<>();
         try {
             byte[] buf = new byte[500];
             DatagramSocket udpSocket = new DatagramSocket(port);
             DatagramPacket packet = new DatagramPacket(buf,buf.length);
             UDPData data = null;
-            do {
-                udpSocket.receive(packet);
-                data = (UDPData) ObjectSerializer.getObjectFromByte(packet.getData());
-                if(data != null) {
-                    dataTreeMap.put(data.getIndex(), data.clone());
-                    if(data.isFinalPacket()) sendAux(outputStream,dataTreeMap);
-                }
-            }while(running);
+            udpSocket.receive(packet);
+            log.info("Received a udp packet coming from " + packet.getAddress().getHostAddress());
+            data = (UDPData) ObjectSerializer.getObjectFromByte(packet.getData());
+            if(data != null) {
+                dataTreeMap.put(data.getIndex(), data.clone());
+                if(data.isFinalPacket()) sendAux(outputStream,dataTreeMap);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
+            }while(running);
+
 
     }
 
