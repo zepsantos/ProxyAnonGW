@@ -1,12 +1,16 @@
+
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.Socket;
 import java.util.TreeMap;
+import java.util.logging.Logger;
 
 public class UDPHelperToTcp {
     public static void sendUDPPackagesToTCP(OutputStream outputStream,int port) {
+        Logger.getLogger(UDPHelperToTcp.class.getName()).info("Sending UDP packages to TCP");
         TreeMap<Integer,UDPData> dataTreeMap = new TreeMap<>();
         try {
             byte[] buf = new byte[500];
