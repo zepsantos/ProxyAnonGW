@@ -30,8 +30,8 @@ public class UDPServer implements Runnable {
     public void run() {
         initServer();
         Thread t = new Thread(this::listenForUDPPackets);
+        t.start();
         sendTCPPacketsByUDP();
-        listenForUDPPackets();
     }
 
     private void sendTCPPacketsByUDP() {
