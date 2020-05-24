@@ -16,6 +16,8 @@ public class TCPHelperToUDP {
         byte[] buffer = new byte[65535];
 
         int bytesRead = 0;
+
+
         while((bytesRead = is.read(buffer,0,buffer.length)) != -1) {
             List<UDPData> tmp = divideTCPPacketToUDPPackets(buffer,bytesRead);
             dispatchUDPPackages(tmp,address,port);
@@ -23,7 +25,7 @@ public class TCPHelperToUDP {
     }
 
     private static List<UDPData> divideTCPPacketToUDPPackets(byte[] tcpContent,int bytesRead) {
-        int numPackages = (int) Math.ceil(bytesRead/500);
+        int numPackages = (int) Math.ceil(((double) bytesRead/500));
         int bytesProcessed = 0;
         int packagesCount = 0;
         List<UDPData> dataUDPtoSend = new ArrayList<>();
