@@ -12,12 +12,11 @@ public class Encryption {
     public static byte[] encrypt(byte[] Data) {
 
         Cipher c = null;
+        Key key = new SecretKeySpec(tlsKey, "AES");
+
         try {
-            KeyGenerator keygenerator = KeyGenerator.getInstance("AES");
-            SecretKey myDesKey = keygenerator.generateKey();
-            Key key = new SecretKeySpec(tlsKey, "AES");
             c = Cipher.getInstance("AES");
-            c.init(Cipher.ENCRYPT_MODE, myDesKey);
+            c.init(Cipher.ENCRYPT_MODE, key);
             byte[] tmp =  c.doFinal(Data);
             return tmp;
         } catch (NoSuchAlgorithmException e) {
@@ -42,10 +41,8 @@ public class Encryption {
         Key key = new SecretKeySpec(tlsKey, "AES");
         Cipher c = null;
         try {
-            KeyGenerator keygenerator = KeyGenerator.getInstance("AES");
-            SecretKey myDesKey = keygenerator.generateKey();
             c = Cipher.getInstance("AES");
-            c.init(Cipher.DECRYPT_MODE, myDesKey);
+            c.init(Cipher.DECRYPT_MODE, key);
             return c.doFinal(encryptedData);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
