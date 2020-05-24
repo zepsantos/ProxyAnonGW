@@ -13,10 +13,10 @@ public class Encryption {
 
         Cipher c = null;
         try {
-            KeyGenerator keygenerator = KeyGenerator.getInstance("AES/CBC/PKCS5Padding");
+            KeyGenerator keygenerator = KeyGenerator.getInstance("AES");
             SecretKey myDesKey = keygenerator.generateKey();
             Key key = new SecretKeySpec(tlsKey, "AES");
-            c = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            c = Cipher.getInstance("AES");
             c.init(Cipher.ENCRYPT_MODE, myDesKey);
             byte[] tmp =  c.doFinal(Data);
             return tmp;
@@ -39,12 +39,12 @@ public class Encryption {
     public static byte[] decrypt(byte[] encryptedData) {
 
 
-        Key key = new SecretKeySpec(tlsKey, "AES/CBC/PKCS5Padding");
+        Key key = new SecretKeySpec(tlsKey, "AES");
         Cipher c = null;
         try {
-            KeyGenerator keygenerator = KeyGenerator.getInstance("AES/CBC/PKCS5Padding");
+            KeyGenerator keygenerator = KeyGenerator.getInstance("AES");
             SecretKey myDesKey = keygenerator.generateKey();
-            c = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            c = Cipher.getInstance("AES");
             c.init(Cipher.DECRYPT_MODE, myDesKey);
             return c.doFinal(encryptedData);
         } catch (NoSuchAlgorithmException e) {
