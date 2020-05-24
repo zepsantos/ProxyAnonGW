@@ -16,6 +16,7 @@ public class AnonGWServer implements Runnable {
         this.port = 6666;
         try {
             udpSocket = new DatagramSocket();
+            udpSocket.setReuseAddress(true);
         } catch (SocketException e) {
             e.printStackTrace();
         }
@@ -50,12 +51,19 @@ public class AnonGWServer implements Runnable {
         }
     }
 
-    private void waitForAck() {
+    private void waitForAck()  {
         boolean waiting = true;
+        try {
+            udpSocket.bind(new InetSocketAddress(socket.getInetAddress(), port));
+        }catch (SocketException e) {
+            e.printStackTrace();
+        }
         while(waiting) {
             try {
                 byte[] tmpBuf = new byte[500];
                 DatagramPacket packet = new DatagramPacket(tmpBuf, tmpBuf.length);
+
+
                 udpSocket.receive(packet);
                 if(Arrays.toString(packet.getData()).equals("ACK")){
                     log.info("Acknowledge received from " + udpSocket.getInetAddress().getHostAddress() );
