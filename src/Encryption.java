@@ -40,7 +40,7 @@ public class Encryption {
     public static byte[] decrypt(byte[] encryptedData) {
 
 
-        Key key = new SecretKeySpec(tlsKey, "AES");
+        Key key = new SecretKeySpec(tlsKey, "AES/CBC/PKCS5Padding");
         Cipher c = null;
         try {
             c = Cipher.getInstance("AES/CBC/PKCS5Padding");
