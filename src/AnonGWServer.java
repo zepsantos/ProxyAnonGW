@@ -1,6 +1,7 @@
 import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.net.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Logger;
 
@@ -16,7 +17,6 @@ public class AnonGWServer implements Runnable {
         this.port = 6666;
         try {
             udpSocket = new DatagramSocket();
-            udpSocket.setReuseAddress(true);
         } catch (SocketException e) {
             e.printStackTrace();
         }
@@ -34,12 +34,12 @@ public class AnonGWServer implements Runnable {
         initServer();
         Thread t = null;
         waitForAck();
-        try {
-            t = new Thread(new UDPHelperToTcp(this.socket.getOutputStream(),this.port));
-            t.start();
+        /*try {
+        //    t = new Thread(new UDPHelperToTcp(this.socket.getOutputStream(),this.port));
+           // t.start();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        } */
         sendTCPPacketsByUDP();
     }
 
@@ -53,8 +53,9 @@ public class AnonGWServer implements Runnable {
 
     private void waitForAck()  {
         boolean waiting = true;
+        DatagramSocket tmpSocket = null;
         try {
-            udpSocket.bind(new InetSocketAddress(socket.getInetAddress(), port));
+             tmpSocket = new DatagramSocket(port);
         }catch (SocketException e) {
             e.printStackTrace();
         }
@@ -63,17 +64,22 @@ public class AnonGWServer implements Runnable {
                 byte[] tmpBuf = new byte[500];
                 DatagramPacket packet = new DatagramPacket(tmpBuf, tmpBuf.length);
 
-
-                udpSocket.receive(packet);
-                if(Arrays.toString(packet.getData()).equals("ACK")){
-                    log.info("Acknowledge received from " + udpSocket.getInetAddress().getHostAddress() );
-                    waiting = false;
+                if(tmpSocket != null) {
+                    tmpSocket.receive(packet);
+                    byte[] messageBytes = new byte[packet.getLength()];
+                    messageBytes = Arrays.copyOf(tmpBuf,packet.getLength());
+                    String message = new String(messageBytes);
+                    if (message.equals("ACK")) {
+                        log.info("Acknowledge received from " + packet.getAddress().getHostAddress());
+                        waiting = false;
+                    }
                 }
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+        tmpSocket.close();
 
     }
 
@@ -92,7 +98,6 @@ public class AnonGWServer implements Runnable {
     private int sendPort() {
         byte[] buf;
         UDPPortMessage udpPortMessage = new UDPPortMessage();
-        log.info("Talking on port " + udpPortMessage.getCustomPort());
         buf = ObjectSerializer.getObjectInByte(udpPortMessage);
         DatagramPacket portPacket = null;
         if (buf != null) {
