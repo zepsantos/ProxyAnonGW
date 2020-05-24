@@ -66,8 +66,7 @@ public class AnonGWServer implements Runnable {
 
                 if(tmpSocket != null) {
                     tmpSocket.receive(packet);
-                    byte[] messageBytes = new byte[packet.getLength()];
-                    messageBytes = Arrays.copyOf(Encryption.decrypt(tmpBuf),packet.getLength());
+                    byte[] messageBytes = Arrays.copyOf(Encryption.decrypt(tmpBuf),packet.getLength());
                     String message = new String(messageBytes);
                     if (message.equals("ACK")) {
                         log.info("Acknowledge received from " + packet.getAddress().getHostAddress());

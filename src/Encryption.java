@@ -3,7 +3,6 @@ import javax.crypto.spec.SecretKeySpec;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
 
 public class Encryption {
     private static final byte[] tlsKey = new byte[] { 'O', 'G', 'R', 'U', 'P', 'O','0' ,'3', 'E', 'O', 'M', 'E','L', 'H', 'O', 'R', 'A', 'C', 'C', '2', '0','2','0','D' };

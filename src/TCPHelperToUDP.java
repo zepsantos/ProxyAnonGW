@@ -25,7 +25,7 @@ public class TCPHelperToUDP {
     }
 
     private static List<UDPData> divideTCPPacketToUDPPackets(byte[] tcpContent,int bytesRead) {
-        int packetSize = BaseArgsInfo.UDP_PACKETSIZE - 76;
+        int packetSize = BaseArgsInfo.UDP_PACKETSIZE - 100;
         int numPackages = (int) Math.ceil(((double) bytesRead/packetSize));
         int bytesProcessed = 0;
         int packagesCount = 0;

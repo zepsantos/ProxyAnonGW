@@ -3,7 +3,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class UDPPortMessage implements Serializable {
     private int customPort;
-    private String cliente;
+
     public UDPPortMessage() {
         customPort =  getRandomPort();
     }
