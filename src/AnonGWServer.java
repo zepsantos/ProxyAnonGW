@@ -34,12 +34,12 @@ public class AnonGWServer implements Runnable {
         initServer();
         Thread t = null;
         waitForAck();
-        /*try {
-        //    t = new Thread(new UDPHelperToTcp(this.socket.getOutputStream(),this.port));
-           // t.start();
+        try {
+            t = new Thread(new UDPHelperToTcp(this.socket.getOutputStream(),this.port,null,false));
+            t.start();
         } catch (IOException e) {
             e.printStackTrace();
-        } */
+        }
         sendTCPPacketsByUDP();
     }
 

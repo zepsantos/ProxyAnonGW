@@ -21,6 +21,7 @@ public class UDPHelperToTcp implements Runnable {
         this.port = port;
         this.outputStream = outputStream;
         this.destAddress = destAddress;
+        this.sendAcknowledge =  sendAcknowledge;
         try {
             this.udpSocket = new DatagramSocket(port);
         }catch (IOException e) {
