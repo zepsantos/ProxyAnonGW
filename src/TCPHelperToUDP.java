@@ -23,7 +23,7 @@ public class TCPHelperToUDP {
     }
 
     private static List<UDPData> divideTCPPacketToUDPPackets(byte[] tcpContent,int bytesRead) {
-        int numPackages = bytesRead/500;
+        int numPackages = (int) Math.ceil(bytesRead/500);
         int bytesProcessed = 0;
         int packagesCount = 0;
         List<UDPData> dataUDPtoSend = new ArrayList<>();
