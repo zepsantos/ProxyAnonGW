@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Arrays;
 
@@ -8,7 +9,7 @@ public class UDPData implements Serializable {
 
     public UDPData(int packageNumber, byte[] data,int bytesUsed) {
         index = packageNumber;
-        this.data = Arrays.copyOf(data,bytesUsed);
+        this.data = Encryption.encrypt(Arrays.copyOf(data,bytesUsed));
         this.finalpacket = false;
     }
 
@@ -21,7 +22,7 @@ public class UDPData implements Serializable {
     }
 
     public byte[] getData() {
-        return data;
+            return Encryption.decrypt(data);
     }
 
     public void setData(byte[] data) {
