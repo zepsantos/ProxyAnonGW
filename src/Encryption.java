@@ -1,7 +1,4 @@
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
+import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.InvalidKeyException;
 import java.security.Key;
@@ -14,11 +11,13 @@ public class Encryption {
     // AES é um algoritmo de encriptaçao
     public static byte[] encrypt(byte[] Data) {
 
-        Key key = new SecretKeySpec(tlsKey, "AES");
         Cipher c = null;
         try {
+            KeyGenerator keygenerator = KeyGenerator.getInstance("AES/CBC/PKCS5Padding");
+            SecretKey myDesKey = keygenerator.generateKey();
+            Key key = new SecretKeySpec(tlsKey, "AES");
             c = Cipher.getInstance("AES/CBC/PKCS5Padding");
-            c.init(Cipher.ENCRYPT_MODE, key);
+            c.init(Cipher.ENCRYPT_MODE, myDesKey);
             byte[] tmp =  c.doFinal(Data);
             return tmp;
         } catch (NoSuchAlgorithmException e) {
@@ -43,8 +42,10 @@ public class Encryption {
         Key key = new SecretKeySpec(tlsKey, "AES/CBC/PKCS5Padding");
         Cipher c = null;
         try {
+            KeyGenerator keygenerator = KeyGenerator.getInstance("AES/CBC/PKCS5Padding");
+            SecretKey myDesKey = keygenerator.generateKey();
             c = Cipher.getInstance("AES/CBC/PKCS5Padding");
-            c.init(Cipher.DECRYPT_MODE, key);
+            c.init(Cipher.DECRYPT_MODE, myDesKey);
             return c.doFinal(encryptedData);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
