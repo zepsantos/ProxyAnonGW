@@ -34,6 +34,7 @@ public class UDPHelperToTcp implements Runnable {
         if(sendAcknowledge)
         sendAcknowledgeUDP();
         do {
+            boolean finalPackedReceived = false;
         TreeMap<Integer,UDPData> dataTreeMap = new TreeMap<>();
         try {
             byte[] buf = new byte[500];
@@ -45,7 +46,11 @@ public class UDPHelperToTcp implements Runnable {
             data = (UDPData) ObjectSerializer.getObjectFromByte(packet.getData());
             if(data != null) {
                 dataTreeMap.put(data.getIndex(), data.clone());
-                if(data.isFinalPacket()) sendAux(outputStream,dataTreeMap);
+                if(data.isFinalPacket() || finalPackedReceived) {
+                    finalPackedReceived = true;
+                    if(checkAllPackagesArrived(dataTreeMap))
+                    sendAux(outputStream,dataTreeMap);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -79,6 +84,18 @@ public class UDPHelperToTcp implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private boolean checkAllPackagesArrived(TreeMap<Integer,UDPData> dataTreeMap) {
+        int finalIndex = dataTreeMap.lastKey();
+        boolean res = true;
+        for(int i=0; i<finalIndex;i++) {
+            if( !dataTreeMap.containsKey(i)) {
+                res = false;
+                break;
+            }
+        }
+        return res;
     }
 
 
