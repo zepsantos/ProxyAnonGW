@@ -9,7 +9,7 @@ public class UDPData implements Serializable {
 
     public UDPData(int packageNumber, byte[] data,int bytesUsed) {
         index = packageNumber;
-        this.data = Encryption.encrypt(Arrays.copyOf(data,bytesUsed));
+        this.data = Arrays.copyOf(data,bytesUsed);
         this.finalpacket = false;
     }
 
@@ -22,7 +22,7 @@ public class UDPData implements Serializable {
     }
 
     public byte[] getData() {
-            return Encryption.decrypt(data);
+            return this.data;
     }
 
     public void setData(byte[] data) {

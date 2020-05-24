@@ -67,7 +67,7 @@ public class AnonGWServer implements Runnable {
                 if(tmpSocket != null) {
                     tmpSocket.receive(packet);
                     byte[] messageBytes = new byte[packet.getLength()];
-                    messageBytes = Arrays.copyOf(tmpBuf,packet.getLength());
+                    messageBytes = Arrays.copyOf(Encryption.decrypt(tmpBuf),packet.getLength());
                     String message = new String(messageBytes);
                     if (message.equals("ACK")) {
                         log.info("Acknowledge received from " + packet.getAddress().getHostAddress());
@@ -96,6 +96,7 @@ public class AnonGWServer implements Runnable {
         byte[] buf;
         UDPPortMessage udpPortMessage = new UDPPortMessage();
         buf = ObjectSerializer.getObjectInByte(udpPortMessage);
+        buf = Encryption.encrypt(buf);
         DatagramPacket portPacket = null;
         if (buf != null) {
             portPacket = new DatagramPacket(buf, buf.length, address, port);

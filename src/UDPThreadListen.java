@@ -23,7 +23,7 @@ public class UDPThreadListen implements  Runnable {
             DatagramPacket packet = new DatagramPacket(buf,buf.length);
             try {
                 udpSocket.receive(packet);
-                UDPPortMessage udpPortMessage = (UDPPortMessage) ObjectSerializer.getObjectFromByte(packet.getData());
+                UDPPortMessage udpPortMessage = (UDPPortMessage) ObjectSerializer.getObjectFromByte(Encryption.decrypt(packet.getData()));
                 log.info("Receive a Connection(UDP) from " + packet.getAddress().getHostAddress() + " to talk in port " + udpPortMessage.getCustomPort());
                 if(udpPortMessage != null)
                 new Thread(new AnonGWClient(udpPortMessage.getCustomPort(),packet.getAddress())).start();

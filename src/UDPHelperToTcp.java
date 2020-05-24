@@ -44,7 +44,7 @@ public class UDPHelperToTcp implements Runnable {
             UDPData data = null;
             udpSocket.receive(packet);
             log.info("Received a udp packet coming from " + packet.getAddress().getHostAddress());
-            data = (UDPData) ObjectSerializer.getObjectFromByte(packet.getData());
+            data = (UDPData) ObjectSerializer.getObjectFromByte(Encryption.decrypt(packet.getData()));
             if(data != null) {
                 dataTreeMap.put(data.getIndex(), data.clone());
                 if(finalPackReceived || data.isFinalPacket() ) {
@@ -63,6 +63,7 @@ public class UDPHelperToTcp implements Runnable {
 
     private void sendAcknowledgeUDP() {
         byte[] buff = "ACK".getBytes();
+        buff = Encryption.encrypt(buff);
         DatagramPacket packet = new DatagramPacket(buff,buff.length,destAddress,port);
         try {
             DatagramSocket udpSocket = new DatagramSocket();
