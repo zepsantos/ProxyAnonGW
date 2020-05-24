@@ -9,7 +9,7 @@ public class ObjectSerializer {
             objectOutputStream.writeObject(object);
             objectOutputStream.close();
             // get the byte array of the object
-            byte[] obj= byteArrayOutputStream.toByteArray();
+            byte[] obj= Encryption.encrypt(byteArrayOutputStream.toByteArray());
             byteArrayOutputStream.close();
             return obj;
         }catch(IOException e) {
@@ -20,7 +20,8 @@ public class ObjectSerializer {
     }
     public static Object getObjectFromByte(byte[] bytes) {
         try {
-            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
+            byte[] decryptedBuf = Encryption.decrypt(bytes);
+            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(decryptedBuf);
             ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
             Object tmp =  objectInputStream.readObject();
             byteArrayInputStream.close();
