@@ -57,7 +57,10 @@ public class AnonGWServer implements Runnable {
                 byte[] tmpBuf = new byte[500];
                 DatagramPacket packet = new DatagramPacket(tmpBuf, tmpBuf.length);
                 udpSocket.receive(packet);
-                if(Arrays.toString(packet.getData()).equals("ACK")) waiting = false;
+                if(Arrays.toString(packet.getData()).equals("ACK")){
+                    log.info("Acknowledge received from " + udpSocket.getInetAddress().getHostAddress() );
+                    waiting = false;
+                }
 
             } catch (IOException e) {
                 e.printStackTrace();
