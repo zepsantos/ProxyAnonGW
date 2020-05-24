@@ -9,9 +9,10 @@ public class ObjectSerializer {
             objectOutputStream.writeObject(object);
             objectOutputStream.close();
             // get the byte array of the object
-            byte[] obj= Encryption.encrypt(byteArrayOutputStream.toByteArray());
+            byte[] obj= byteArrayOutputStream.toByteArray();
+            byte[] encryptedObj = Encryption.encrypt(obj);
             byteArrayOutputStream.close();
-            return obj;
+            return encryptedObj;
         }catch(IOException e) {
             e.printStackTrace();
         }
