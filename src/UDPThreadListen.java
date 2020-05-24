@@ -19,7 +19,7 @@ public class UDPThreadListen implements  Runnable {
     @Override
     public void run() {
         while(running) {
-            byte[] buf = new byte[500];
+            byte[] buf = new byte[BaseArgsInfo.UDP_PACKETSIZE];
             DatagramPacket packet = new DatagramPacket(buf,buf.length);
             try {
                 udpSocket.receive(packet);

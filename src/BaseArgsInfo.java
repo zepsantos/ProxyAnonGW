@@ -7,7 +7,7 @@ public class BaseArgsInfo {
     private List<String> peers;
     private String target_ip;
     private int port;
-
+    public final static int UDP_PACKETSIZE = 576;
     private BaseArgsInfo() {
         peers = new ArrayList<>();
     }

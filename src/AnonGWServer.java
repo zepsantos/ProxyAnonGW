@@ -61,7 +61,7 @@ public class AnonGWServer implements Runnable {
         }
         while(waiting) {
             try {
-                byte[] tmpBuf = new byte[500];
+                byte[] tmpBuf = new byte[BaseArgsInfo.UDP_PACKETSIZE];
                 DatagramPacket packet = new DatagramPacket(tmpBuf, tmpBuf.length);
 
                 if(tmpSocket != null) {
@@ -89,9 +89,6 @@ public class AnonGWServer implements Runnable {
         port = sendPort();
         if(port == -1) port = sendPort();
         log.info(socket.getInetAddress().getHostAddress() + " is talking on port " + port);
-        AnonBD.getInstance().addClientData(new ClientData(address.getHostAddress(), port, socket));
-        //new Thread(new Proxy(socket,port,true)).start();
-        //new Thread(new ConnectionToClient(port));
         log.info("Starting UDP TUNNELING");
     }
 
