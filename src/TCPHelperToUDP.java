@@ -31,7 +31,7 @@ public class TCPHelperToUDP {
         List<UDPData> dataUDPtoSend = new ArrayList<>();
         while(numPackages > 0) {
             int bytesToProcess = Math.min(500,bytesRead-bytesProcessed);
-            UDPData tmp = new UDPData(packagesCount,Arrays.copyOfRange(tcpContent,bytesProcessed,bytesProcessed + bytesToProcess),bytesProcessed);
+            UDPData tmp = new UDPData(packagesCount,Arrays.copyOfRange(tcpContent,bytesProcessed,bytesProcessed + bytesToProcess),bytesToProcess);
             if(numPackages == 1) tmp.setFinalPacket();
             dataUDPtoSend.add(tmp);
             bytesProcessed += bytesToProcess;
