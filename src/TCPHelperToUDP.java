@@ -25,12 +25,12 @@ public class TCPHelperToUDP {
     }
 
     private static List<UDPData> divideTCPPacketToUDPPackets(byte[] tcpContent,int bytesRead) {
-        int numPackages = (int) Math.ceil(((double) bytesRead/500));
+        int numPackages = (int) Math.ceil(((double) bytesRead/450));
         int bytesProcessed = 0;
         int packagesCount = 0;
         List<UDPData> dataUDPtoSend = new ArrayList<>();
         while(numPackages > 0) {
-            int bytesToProcess = Math.min(500,bytesRead-bytesProcessed);
+            int bytesToProcess = Math.min(450,bytesRead-bytesProcessed);
             UDPData tmp = new UDPData(packagesCount,Arrays.copyOfRange(tcpContent,bytesProcessed,bytesProcessed + bytesToProcess),bytesToProcess);
             if(numPackages == 1) tmp.setFinalPacket();
             dataUDPtoSend.add(tmp);

@@ -78,7 +78,6 @@ public class UDPHelperToTcp implements Runnable {
         try  {
             for (Integer key : dataTreeMap.keySet()) {
                 byte[] buf = dataTreeMap.get(key).getData();
-                System.out.println(key);
                 outputStream.write(buf);
             }
         } catch (IOException e) {
