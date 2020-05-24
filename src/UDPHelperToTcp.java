@@ -33,9 +33,10 @@ public class UDPHelperToTcp implements Runnable {
     public void run() {
         if(sendAcknowledge)
         sendAcknowledgeUDP();
+        TreeMap<Integer,UDPData> dataTreeMap = new TreeMap<>();
         do {
             boolean finalPackReceived = false;
-        TreeMap<Integer,UDPData> dataTreeMap = new TreeMap<>();
+
         try {
             byte[] buf = new byte[1000];
 
