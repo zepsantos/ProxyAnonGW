@@ -37,7 +37,7 @@ public class UDPHelperToTcp implements Runnable {
             boolean finalPackReceived = false;
         TreeMap<Integer,UDPData> dataTreeMap = new TreeMap<>();
         try {
-            byte[] buf = new byte[500];
+            byte[] buf = new byte[1000];
 
             DatagramPacket packet = new DatagramPacket(buf,buf.length);
             UDPData data = null;
