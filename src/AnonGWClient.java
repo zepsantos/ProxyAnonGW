@@ -1,3 +1,4 @@
+import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.net.*;
 import java.util.logging.Logger;
@@ -21,8 +22,21 @@ public class AnonGWClient implements Runnable {
             e.printStackTrace();
         }
 
+        sendAcknowledgeUDP();
+
         try {
             TCPHelperToUDP.sendTCPPackagesToUDP(this.socket.getInputStream(),clientAddress,port);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private void sendAcknowledgeUDP() {
+        byte[] buff = "ACK".getBytes();
+        DatagramPacket packet = new DatagramPacket(buff,buff.length,clientAddress,port);
+        try {
+            DatagramSocket udpSocket = new DatagramSocket();
+            udpSocket.send(packet);
+            udpSocket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,5 +1,7 @@
+import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.net.*;
+import java.util.Arrays;
 import java.util.logging.Logger;
 
 public class AnonGWServer implements Runnable {
@@ -30,6 +32,7 @@ public class AnonGWServer implements Runnable {
     public void run() {
         initServer();
         Thread t = null;
+        waitForAck();
         try {
             t = new Thread(new UDPHelperToTcp(this.socket.getOutputStream(),this.port));
             t.start();
@@ -47,6 +50,22 @@ public class AnonGWServer implements Runnable {
         }
     }
 
+    private void waitForAck() {
+        boolean waiting = true;
+        while(waiting) {
+            try {
+                byte[] tmpBuf = new byte[500];
+                DatagramPacket packet = new DatagramPacket(tmpBuf, tmpBuf.length);
+                udpSocket = new DatagramSocket(port);
+                udpSocket.receive(packet);
+                if(Arrays.toString(packet.getData()).equals("ACK")) waiting = false;
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
 
 
     private void initServer() {
