@@ -6,6 +6,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.TreeMap;
 import java.util.logging.Logger;
 
@@ -44,7 +45,8 @@ public class UDPHelperToTcp implements Runnable {
             UDPData data = null;
             udpSocket.receive(packet);
             log.info("Received a udp packet coming from " + packet.getAddress().getHostAddress());
-            data = (UDPData) ObjectSerializer.getObjectFromByte(packet.getData());
+            byte[] packetBuf = Arrays.copyOf(buf,packet.getLength());
+            data = (UDPData) ObjectSerializer.getObjectFromByte(packetBuf);
             if(data != null) {
                 dataTreeMap.put(data.getIndex(), data.clone());
                 if(finalPackReceived || data.isFinalPacket() ) {
