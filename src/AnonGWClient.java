@@ -23,7 +23,6 @@ public class AnonGWClient implements Runnable {
         }
 
 
-
         try {
             TCPHelperToUDP.sendTCPPackagesToUDP(this.socket.getInputStream(),clientAddress,port);
         } catch (IOException e) {

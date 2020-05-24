@@ -45,7 +45,7 @@ public class AnonGWServer implements Runnable {
 
     private void sendTCPPacketsByUDP() {
         try {
-            TCPHelperToUDP.sendTCPPackagesToUDP(this.socket.getInputStream(),this.socket.getInetAddress(), port);
+            TCPHelperToUDP.sendTCPPackagesToUDP(this.socket.getInputStream(),address, port);
         }catch (IOException e) {
             e.printStackTrace();
         }
