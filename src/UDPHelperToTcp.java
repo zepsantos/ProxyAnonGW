@@ -44,7 +44,7 @@ public class UDPHelperToTcp implements Runnable {
             UDPData data = null;
             udpSocket.receive(packet);
             log.info("Received a udp packet coming from " + packet.getAddress().getHostAddress());
-            data = (UDPData) ObjectSerializer.getObjectFromByte(Encryption.decrypt(packet.getData()));
+            data = (UDPData) ObjectSerializer.getObjectFromByte(packet.getData());
             if(data != null) {
                 dataTreeMap.put(data.getIndex(), data.clone());
                 if(finalPackReceived || data.isFinalPacket() ) {

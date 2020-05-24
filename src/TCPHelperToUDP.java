@@ -46,7 +46,7 @@ public class TCPHelperToUDP {
 
     private static void dispatchUDPPackages(List<UDPData> dataUDPtoSend,InetAddress address, int port) throws IOException {
         for(UDPData data : dataUDPtoSend) {
-            byte[] bufToSend = Encryption.encrypt(ObjectSerializer.getObjectInByte(data));
+            byte[] bufToSend = ObjectSerializer.getObjectInByte(data);
             if (bufToSend != null) {
                 DatagramSocket udpSocket = new DatagramSocket();
                 DatagramPacket datagramPacket = new DatagramPacket(bufToSend, bufToSend.length, address, port);

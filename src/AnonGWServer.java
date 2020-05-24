@@ -96,7 +96,6 @@ public class AnonGWServer implements Runnable {
         byte[] buf;
         UDPPortMessage udpPortMessage = new UDPPortMessage();
         buf = ObjectSerializer.getObjectInByte(udpPortMessage);
-        buf = Encryption.encrypt(buf);
         DatagramPacket portPacket = null;
         if (buf != null) {
             portPacket = new DatagramPacket(buf, buf.length, address, port);
