@@ -16,13 +16,13 @@ public class AnonGWClient implements Runnable {
     public void run() {
             connectToTarget();
         try {
-            Thread t = new Thread(new UDPHelperToTcp(this.socket.getOutputStream(),this.port));
+            Thread t = new Thread(new UDPHelperToTcp(this.socket.getOutputStream(),this.port,clientAddress,true));
             t.start();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        sendAcknowledgeUDP();
+
 
         try {
             TCPHelperToUDP.sendTCPPackagesToUDP(this.socket.getInputStream(),clientAddress,port);
@@ -30,17 +30,7 @@ public class AnonGWClient implements Runnable {
             e.printStackTrace();
         }
     }
-    private void sendAcknowledgeUDP() {
-        byte[] buff = "ACK".getBytes();
-        DatagramPacket packet = new DatagramPacket(buff,buff.length,clientAddress,port);
-        try {
-            DatagramSocket udpSocket = new DatagramSocket();
-            udpSocket.send(packet);
-            udpSocket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+
 
     private void connectToTarget() {
         try{
